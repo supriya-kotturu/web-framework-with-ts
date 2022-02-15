@@ -11,12 +11,16 @@ app.innerHTML = `
 console.log('smoke test - connectivity');
 
 const user = new User({ name: 'yalk', age: 45 });
+
+// GET
 console.log(user.get('name'));
+// SET
 user.set({ name: 'james' });
+
+// ON
 user.on('click', () => {
 	console.log(user);
 });
-
 user.on('hover', () => {
 	console.log('hover rr');
 });
@@ -24,7 +28,12 @@ user.on('click', () => console.log('yeet!'));
 user.on('click', () => console.log('huserclick'));
 user.on('yelp', () => {});
 
+// TRIGGER
 user.trigger('click');
 user.trigger('yelp');
+
+// SAVE
 user.save();
+
+// FETCH
 user.fetch();
