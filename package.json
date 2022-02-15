@@ -2,9 +2,9 @@
 	"name": "web-framework-with-typescript",
 	"version": "0.0.0",
 	"scripts": {
-		"dev-run": "vite",
+		"dev-run": "vite --port=3001",
 		"dev-db": "json-server -w db.json",
-		"watch": "concurrenty \"npm:dev-run\"  \"npm:dev-db\"",
+		"dev": "concurrently \"npm run dev-db\" \"npm run dev-run\"",
 		"build": "tsc && vite build",
 		"preview": "vite preview"
 	},

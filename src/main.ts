@@ -12,7 +12,7 @@ console.log('smoke test - connectivity');
 
 const user = new User({ name: 'yalk', age: 45 });
 console.log(user.get('name'));
-user.set({ name: 'redd' });
+user.set({ name: 'james' });
 user.on('click', () => {
 	console.log(user);
 });
@@ -26,3 +26,5 @@ user.on('yelp', () => {});
 
 user.trigger('click');
 user.trigger('yelp');
+user.save();
+user.fetch();

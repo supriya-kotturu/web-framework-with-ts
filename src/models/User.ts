@@ -40,4 +40,17 @@ export class User {
 				this.set(response.data);
 			});
 	}
+
+	save(): void {
+		const usersURL = 'http://localhost:3000/users/';
+		const id = this.get('id');
+
+		if (id) {
+			// PUT
+			axios.put(usersURL + id, this.data);
+		} else {
+			// POST
+			axios.post(usersURL, this.data);
+		}
+	}
 }
