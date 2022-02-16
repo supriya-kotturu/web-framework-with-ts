@@ -47,5 +47,96 @@ Whenever the user triggers the event with the eventName, all the callbacks in th
 
 Axios is used to make a call to fetch the data from the JSON placeholder and save the data in the local db regarding the same.
 
+During saving the User details to the db, If the User object has an ID, PUT request is made, else POST
+
 ![Axios architecture in fetching and saving the User data](./notes/7.PNG)
 ![Sample API calls](./notes/8.PNG)
+
+## Composition - Event class
+
+Goal here through using composition is to have our class user in rather than having a ton of methods inside of it.
+
+We want to have a couple of different properties that class user can use to delegate out some very important operations.
+
+For example, here we just extract it out an Eventing class, and now we want to eventually assign it back to it as maybe some property on classes are called events.
+
+And then hopefully we will eventually have some attributes, property and sync property to take care of handling properties tied to the user and take care of all that server saving stuff and whatnot as well.
+
+![Final state after refactoring using composition](./notes/9)
+
+- ### Ways to wire Events class back to User
+
+  - Accept dependencies as second constructor argument
+
+    ```
+     class User {
+         constructor(data : UserProps, events : Eventing){ }
+    }
+
+    new User({name : 'Reed'; age: 67}, new Eventing())
+    ```
+
+  - Only accpet depedencies into constructor. Define a static class methods to preconfigure the User and assign the properties afterward [composition style approach] (the dependency can be easily swapped with other object)
+
+    ```
+    class User {
+        static fromData(data : UserProps) : User {
+            const user = new User(new Eventing())
+            user.set(data)
+            return user;
+        }
+        private data : UserProps;
+        constructor(private events : Eventing){ }
+    }
+
+    new User.fromData({name: "Quill", age: 78})
+    ```
+
+  - Only accept properties into the constructor. Hard code dependencies as properties [Sub module]
+
+    ```
+    class User {
+        events : Eventing = new Eventing()
+
+         constructor(data : UserProps){ }
+
+    }
+
+    const user = new User({name : "Trevor" , age : 34})
+    user.events.on('click', ()=> {}) // EXISTS
+    ```
+
+## Composition - Sync class
+
+When the User class gets the call to save the user data, this function call is <b>delegated</b> to the Sync class. Here compositions is used through delegation.
+
+So class user is going to delegate the save request to the Sync class. The expectation is that we are going to take some data from the User and save it to our outside API.
+
+![Composition - Sync Class](./notes/10.PNG)
+
+- ### Ways to wire Sync class back to User
+
+  - Sync gets the function arguments. class user is going to pass all the current data properties over to save, along with some ID to use as well.
+
+  So in other words, the sync is saying class is going to get some function arguments of the ID that we're trying to save this record as in the actual data to save to that outside server.
+
+  ![All the parameters passed to User is passed to Sync](./notes/11.PNG)
+
+  Downside is that, now Sync is configured only to work with the User class.
+
+  - We could try setting up class sync to also define to interfaces, maybe an interface called Serializable and an interface called Deserializable.
+
+  ![serialize and Deserialize](./notes/12.PNG)
+
+  So the idea behind Serialize is that some other class or some other object would have to implement this
+  serialized method any time Serialize gets called that other class.
+
+  So in this case, our user would have to return some kind of object. Like we're not going to specifically say any here. We can at least say, like, you have to return an object.
+
+  Now, the reason we're saying, just like some object right here, is to intentionally leave this vague.
+
+  ![Implement interfaces for the Sync class and let the User return an object](./notes/13.PNG)
+
+  - Convert Sync to a generic class. This customizes the data coming into the save() function.
+
+  ![Sync as a generic class](./notes/14.PNG)

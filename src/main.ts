@@ -13,18 +13,18 @@ console.log('smoke test - connectivity');
 const user = new User({ name: 'yalk', age: 45 });
 console.log(user.get('name'));
 user.set({ name: 'james' });
-user.on('click', () => {
+user.events.on('click', () => {
 	console.log(user);
 });
 
-user.on('hover', () => {
+user.events.on('hover', () => {
 	console.log('hover rr');
 });
-user.on('click', () => console.log('yeet!'));
-user.on('click', () => console.log('huserclick'));
-user.on('yelp', () => {});
+user.events.on('click', () => console.log('yeet!'));
+user.events.on('click', () => console.log('huserclick'));
+user.events.on('yelp', () => {});
 
-user.trigger('click');
-user.trigger('yelp');
-user.save();
-user.fetch();
+user.events.trigger('click');
+user.events.trigger('yelp');
+user.sync.save({ name: 'welma', age: 78 });
+user.sync.fetch(2);
