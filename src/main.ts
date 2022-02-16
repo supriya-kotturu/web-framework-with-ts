@@ -11,8 +11,8 @@ app.innerHTML = `
 console.log('smoke test - connectivity');
 
 const user = new User({ name: 'yalk', age: 45 });
-console.log(user.get('name'));
-user.set({ name: 'james' });
+console.log(user.attributes.get('name'));
+user.attributes.set({ name: 'james' });
 user.events.on('click', () => {
 	console.log(user);
 });
