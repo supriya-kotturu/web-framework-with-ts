@@ -140,3 +140,26 @@ So class user is going to delegate the save request to the Sync class. The expec
   - Convert Sync to a generic class. This customizes the data coming into the save() function.
 
   ![Sync as a generic class](./notes/14.PNG)
+
+The idea with delegation is that our class user is still going to have all these same properties where all the same methods and the color is going to call those methods.
+
+And then inside of the method, save our user class is going to use these different sub modules to actually implement some behavior, so save isn't really being done by class.
+
+There are two types of refactoring needed in these methods
+
+![Delegation](./notes/15.PNG)
+
+- Direct pass-through of arguments:
+  every single time we want to pass through some function call or pass through some method call, we're going to have to first look up what different properties are expected by this on function and we're going to have to manually type them all out right here.
+
+  So that is definitely not ideal, this approach right here. Now, we probably don't want to do that.
+
+  So, we're going to instead try using a getter, the idea with this getter is that anytime someone references the on property on an instance of user, we're going to directly return the UN function from this events.
+
+  So we're not going to try to call on. That's not the goal here with this Gitter The goal is just to return a reference to the on method on events.
+
+  ![Direct passthrough of arguments](./notes/16.PNG)
+
+- Need coordination between different modules in User
+
+  ![Coordination between different modules in the User class](./notes/17.PNG)

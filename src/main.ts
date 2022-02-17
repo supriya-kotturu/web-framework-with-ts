@@ -11,20 +11,22 @@ app.innerHTML = `
 console.log('smoke test - connectivity');
 
 const user = new User({ name: 'yalk', age: 45 });
-console.log(user.attributes.get('name'));
-user.attributes.set({ name: 'james' });
-user.events.on('click', () => {
-	console.log(user);
-});
 
-user.events.on('hover', () => {
-	console.log('hover rr');
-});
-user.events.on('click', () => console.log('yeet!'));
-user.events.on('click', () => console.log('huserclick'));
-user.events.on('yelp', () => {});
+user.on('change', () => console.log('User was changed! : ', user));
+user.on('save', () => console.log('User saved in DB! : ', user));
+user.on('error', () => console.log('Error occured while saving to DB =('));
 
-user.events.trigger('click');
-user.events.trigger('yelp');
-user.sync.save({ name: 'welma', age: 78 });
-user.sync.fetch(2);
+user.set({ name: 'james' });
+console.log(user.get('name'));
+
+user.on('click', () => console.log(user));
+user.on('hover', () => console.log('hover'));
+user.on('click', () => console.log('yeet!'));
+user.on('click', () => console.log('mouseclick'));
+user.on('yelp', () => {});
+
+user.trigger('click');
+user.trigger('yelp');
+
+user.save();
+user.fetch();
