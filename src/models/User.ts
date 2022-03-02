@@ -1,62 +1,39 @@
-import { AxiosResponse } from 'axios';
+import { Model } from './Model';
 import { Attributes } from './Attributes';
+import { APiSync } from './ApiSync';
 import { Events } from './Events';
-import { Sync } from './Sync';
+import { Collection } from './Collection';
+
 export interface UserProps {
-	id?: number;
+	id: number;
 	name: string;
 	age: number;
 }
 
 const rootURL = 'http://localhost:3000/users';
 
-export class User {
-	public attributes: Attributes<UserProps>;
-	public events: Events = new Events();
-	public sync: Sync<UserProps> = new Sync<UserProps>(rootURL);
-
-	constructor(attrs: UserProps) {
-		this.attributes = new Attributes(attrs);
+export class User extends Model<UserProps> {
+	static buildUser(attrs: UserProps): User {
+		return new User(
+			new Attributes<UserProps>(attrs),
+			new Events(),
+			new APiSync<UserProps>(rootURL)
+		);
 	}
 
-	// returns 'on' function from the Events class
-	get on() {
-		return this.events.on;
+	static buildUserCollection(): Collection<User, UserProps> {
+		return new Collection<User, UserProps>(rootURL, (json: UserProps) =>
+			User.buildUser(json)
+		);
 	}
 
-	get get() {
-		return this.attributes.get;
+	isAdminUser(): boolean {
+		return this.get('id') === 1;
 	}
 
-	get trigger() {
-		return this.events.trigger;
-	}
-
-	set(update: Partial<UserProps>): void {
-		this.attributes.set(update);
-		this.events.trigger('change'); // trigger this function call stack, after the user updates
-	}
-
-	fetch(): void {
-		const id = this.attributes.get('id');
-
-		if (typeof id !== 'number') {
-			throw new Error('Cannot fetch without an ID');
-		}
-
-		this.sync.fetch(id).then((response: AxiosResponse) => {
-			this.set(response.data);
-		});
-	}
-
-	save(): void {
-		this.sync
-			.save(this.attributes.getAll())
-			.then((response: AxiosResponse): void => {
-				this.trigger('save');
-			})
-			.catch(() => {
-				this.trigger('error');
-			});
+	setRandomAge(): void {
+		const age = Math.round(Math.random() * 100);
+		console.log(age, 'here');
+		this.set({ age });
 	}
 }

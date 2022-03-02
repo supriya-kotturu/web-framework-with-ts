@@ -160,6 +160,43 @@ There are two types of refactoring needed in these methods
 
   ![Direct passthrough of arguments](./notes/16.PNG)
 
-- Need coordination between different modules in User
+- Need coordination between different modules in User:
+  Sometimes, we need to use two or more methods in the class to complete a simple task. Here we create another method and use those function call to implement the entire task
+
+  For example, if we want to log a statement everytime we save the data, we can use the fetch function and then trigger "save" function after it. All in the same function.
 
   ![Coordination between different modules in the User class](./notes/17.PNG)
+
+Generalize the class. Extract Model class from the user.
+
+<b>But this will lead to methods which will be having user.model.methodName() for few functions and user.methodName() for other functions. Which results in inconsistency. Hence "COMPOSITION" isn't recommended here.</b>
+![Extracting Model- Composition](./notes/18.PNG)
+
+### Extend User class with Model Class Instead
+
+![Extracting Model- Inheritance](./notes/19.PNG)
+
+Any additoinal method/functionality can be added to that class by extending Model Class using Inheritance
+
+### View Model
+
+Enable HTML editing in the webpage. It has two classes which extend UserEdit class and are tightly coupled.
+![View Model](./notes/20.PNG)
+
+![View Model - Functionality](./notes/21.PNG)
+
+![View Model - Demo](./notes/22.PNG)
+
+![View Model - Implementation](./notes/23.PNG)
+
+### View Class
+
+![View Class](./notes/24.PNG)
+![View Class](./notes/25.PNG)
+
+Render the template strings
+![Rendering the templates](./notes/26.PNG)
+
+A document fragment is essentially an object that can contain a reference to a fragment of HTML document. Generally, its purpose is to hold some HTML inside the memory before it gets attached to the DOM.
+
+![How template element is being rendered](./notes/27)
