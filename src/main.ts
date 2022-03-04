@@ -1,7 +1,8 @@
 import './style.css';
 
 import { User } from './models/User';
-import { UserForm } from './Views/UserForm';
+import { UserEdit } from './Views/UserEdit';
+import { UserList } from './Views/UserList';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 
@@ -34,14 +35,20 @@ user.fetch();
 const collection = User.buildUserCollection();
 
 collection.on('change', () => {
+	// COLLECTION VIEW
+	const root = document.getElementById('root');
+	if (root) {
+		new UserList(root, collection).render();
+	}
 	console.log(collection, 'here');
 });
 
 collection.fetch();
 
-// USER FORM
+// USER Edit
 const root = document.getElementById('app');
 if (root) {
-	const userForm = new UserForm(root, user);
-	userForm.render();
+	const userEdit = new UserEdit(root, user);
+	userEdit.render();
+	console.log(userEdit);
 }

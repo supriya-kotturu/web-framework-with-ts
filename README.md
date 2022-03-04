@@ -200,3 +200,19 @@ Render the template strings
 A document fragment is essentially an object that can contain a reference to a fragment of HTML document. Generally, its purpose is to hold some HTML inside the memory before it gets attached to the DOM.
 
 ![How template element is being rendered](./notes/27)
+
+Use Abstract class and Inheritance to implement the UserForm
+
+![Abstract class with Inheritance](./notes/28.PNG)
+
+#### Exteacting View Class
+
+![Extracting view Class](./notes/29.PNG)
+
+#### Implementing View Class
+
+![Implementing View](./notes/30.PNG)
+
+### Collection View
+
+![Collection View](./notes/31.PNG)
